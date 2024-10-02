@@ -1,6 +1,9 @@
 from transformers import AutoModelForCausalLM, AutoTokenizer
 import torch
 import tkinter as tk
+from PIL import Image, ImageTk
+import time
+from threading import Thread
 
 # Load the DialoGPT model and tokenizer
 model_name = "microsoft/DialoGPT-small"
@@ -18,12 +21,46 @@ def generate_response(input_text):
 def handle_input():
     user_input = input_entry.get()
     input_entry.delete(0, tk.END)
+    switch_gif(talking_gif)
     response = generate_response(user_input)
     response_label.config(text="AI: " + response)
+    time.sleep(2)  # Simulate speaking duration
+    switch_gif(idle_gif)
+
+# Function to switch GIFs
+def switch_gif(gif_path):
+    gif = Image.open(gif_path)
+    frames = []
+    try:
+        while True:
+            frames.append(ImageTk.PhotoImage(gif.copy()))
+            gif.seek(len(frames))  # Move to the next frame
+    except EOFError:
+        pass
+    gif_label.config(image=frames[0])
+    gif_label.frames = frames
+    animate_gif(gif_label)
+
+# Function to animate GIF
+def animate_gif(label):
+    frames = label.frames
+    def update_frame(frame_index):
+        label.config(image=frames[frame_index])
+        frame_index = (frame_index + 1) % len(frames)
+        label.after(100, update_frame, frame_index)
+    update_frame(0)
 
 # Initialize Tkinter for text input
 root = tk.Tk()
 root.title("Chat with Himeko Waifu")
+
+# Load GIFs
+idle_gif = "D:/AI_Waifu_Project/idle.gif"
+talking_gif = "D:/AI_Waifu_Project/talking.gif"
+
+# Add the GIF label
+gif_label = tk.Label(root)
+gif_label.pack()
 
 # Add the input entry and send button
 input_entry = tk.Entry(root, width=50)
@@ -35,6 +72,9 @@ send_button.pack()
 # Add the response label
 response_label = tk.Label(root, text="", wraplength=400)
 response_label.pack()
+
+# Start with the idle GIF
+switch_gif(idle_gif)
 
 # Run Tkinter main loop
 root.mainloop()
