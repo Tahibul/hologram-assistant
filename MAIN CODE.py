@@ -140,8 +140,8 @@ def stop_audio():
     
 root = tk.Tk()
 root.title("Chat with Himeko Waifu")
-idle_image = "D:/python/AI_Waifu_Project/idle.png"
-talking_image = "D:/python/AI_Waifu_Project/talking.png"
+idle_image = "idle.png" #"D:/python/AI_Waifu_Project/idle.png"
+talking_image = "talking.png" #"D:/python/AI_Waifu_Project/talking.png"
 image_label = tk.Label(root)
 image_label.pack()
 input_entry = tk.Entry(root, width=50)
