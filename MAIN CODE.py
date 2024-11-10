@@ -94,7 +94,7 @@ def switch_image(image_path):
     photo = ImageTk.PhotoImage(image)
     image_label.config(image=photo)
     image_label.image = photo
-    Timer(7, switch_to_idle_image).start()
+    Timer(15, switch_to_idle_image).start()
 
 def switch_to_idle_image():
     image = Image.open(idle_image)
@@ -123,7 +123,7 @@ def play_audio_response():
         pygame.mixer.quit() 
         pygame.mixer.init()
         print("Loading audio file...")
-        audio_file = "D:/python/AI_Waifu_Project/answering_sound.mp3"
+        audio_file =  "answering_sound.mp3" #"D:/python/AI_Waifu_Project/answering_sound.mp3"
         if not os.path.exists(audio_file):
             print(f"Sorry, Trailblazer, but audio file not found: {audio_file}")
             return
